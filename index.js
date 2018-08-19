@@ -3,7 +3,7 @@ function init(){
   const chordString = [];
   chords.forEach(c => chordString.push(c.textContent));
 
-  const minPatternLength = 2;
+  const minPatternLength = 4;
   const maxPatternLength = 16;
 
   let result = [];
@@ -11,59 +11,63 @@ function init(){
   let matchLength = 0;
   let repeatLength = 0;
 
-  for(let i = 0; i < chordString.length; i++) {
-    if (repeatLength === 0){
+  for (let i = 0; i < chordString.length; i++) {
+    // if (repeatLength === 0){
       current.push(chordString[i]);
-    }
+    // }
 
     // Wait until there's enought items to compare
     if (current.length < minPatternLength) continue;
 
-    // Break if we are at the end
-    if (i + current.length > chordString.length) {
-      result.push({
-        chords: current.join(' '),
-        repeats: repeatLength,
-      });
-      break;
-    }
+    result.push({
+      chords: current.join(' '),
+      repeats: 0,
+    });
+    current = [];
 
-    // Add strings to current for comparison
-    for (let c = 0; c < current.length; c++) {
-        if (current[c] === chordString[c + i + 1]) {
-          matchLength++;
-        } else {
-          break;
-        }
-    };
+    // // Break if we are at the end
+    // if (i + current.length > chordString.length) {
+    //   result.push({
+    //     chords: current.join(' '),
+    //     repeats: repeatLength,
+    //   });
+    //   break;
+    // }
 
-    // If matches are found move pointer ahead
-    if (matchLength > 0) {
-      i = i + matchLength - 1;
-      matchLength = 0;
-      repeatLength++;
-      continue;
-    }
+    // // Add strings to current for comparison
+    // for (let c = 0; c < current.length; c++) {
+    //     if (current[c] === chordString[c + i + 1]) {
+    //       matchLength++;
+    //     }
+    // };
 
-    if (matchLength === 0 && repeatLength > 0) {
-      result.push({
-        chords: current.join(' '),
-        repeats: repeatLength,
-      });
-      repeatLength = 0;
-      current = [];
-      continue;
-    }
+    // // If matches are found move pointer ahead
+    // if (matchLength === current.length) {
+    //   i = i + matchLength - 1;
+    //   matchLength = 0;
+    //   repeatLength++;
+    //   continue;
+    // }
+
+    // if (matchLength !== 0 && repeatLength > 0) {
+    //   result.push({
+    //     chords: current.join(' '),
+    //     repeats: repeatLength,
+    //   });
+    //   repeatLength = 0;
+    //   current = [];
+    //   continue;
+    // }
     
-    if (matchLength === 0 && repeatLength === 0 && current.length === maxPatternLength) {
-      i = i - current.length + 1;
-      result.push({
-        chords: current[0],
-        repeats: repeatLength,
-      });
-      current = [];
-      continue;
-    }
+    // if (repeatLength === 0 || current.length === maxPatternLength) {
+    //   i = i - current.length + 1;
+    //   result.push({
+    //     chords: current[0],
+    //     repeats: repeatLength,
+    //   });
+    //   current = [];
+    //   continue;
+    // }
   }
 
   let noRepeats = [];
@@ -85,7 +89,7 @@ function init(){
     return acc;
   }, []);
 
-  showResults(results);
+  showResults(result);
 }
 
 function showResults(result){
@@ -116,7 +120,6 @@ function startWhenContentLoaded() {
     const buttons = document.querySelectorAll('span > button');
     buttons.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        console.log('click');
         init();
       });
     })
