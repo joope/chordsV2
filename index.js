@@ -3,7 +3,7 @@ function init(){
   const chordString = [];
   chords.forEach(c => chordString.push(c.textContent));
 
-  const minPatternLength = 2;
+  const minPatternLength = 4;
   const maxPatternLength = 16;
 
   let result = [];
@@ -55,7 +55,7 @@ function init(){
       continue;
     }
     
-    if (repeatLength === 0 || current.length === maxPatternLength) {
+    if (current.length === maxPatternLength) {
       i = i - current.length + 1;
       result.push({
         chords: current[0],
