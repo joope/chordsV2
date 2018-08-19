@@ -3,7 +3,7 @@ function init(){
   const chordString = [];
   chords.forEach(c => chordString.push(c.textContent));
 
-  const minPatternLength = 4;
+  const minPatternLength = 2;
   const maxPatternLength = 16;
 
   let result = [];
@@ -19,15 +19,6 @@ function init(){
     // Wait until there's enought items to compare
     if (current.length < minPatternLength) continue;
 
-    // Break if we are at the end
-    if (i + current.length >= chordString.length) {
-      result.push({
-        chords: current.join(' '),
-        repeats: repeatLength,
-      });
-      break;
-    }
-
     // Add strings to current for comparison
     matchLength = 0;
     for (let c = 0; c < current.length; c++) {
@@ -37,6 +28,8 @@ function init(){
           break;
         }
     };
+
+    // console.log(current);
 
     // If matches are found move pointer ahead
     if (matchLength === current.length) {
@@ -66,6 +59,10 @@ function init(){
     }
   }
   // Stuff that left on current
+  console.log(current);
+  if (repeatLength > 0 ) {
+    result[result.length]
+  }
   if (current.length > 0) {
     result.push({
       chords: current.join(' '),
