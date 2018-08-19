@@ -11,7 +11,7 @@ function init(){
   let matchLength = 0;
   let repeatLength = 0;
 
-  for(let i = 0; i < chordString.length; i++) {
+  for (let i = 0; i < chordString.length; i++) {
     if (repeatLength === 0){
       current.push(chordString[i]);
     }
@@ -20,7 +20,7 @@ function init(){
     if (current.length < minPatternLength) continue;
 
     // Break if we are at the end
-    if (i + current.length > chordString.length) {
+    if (i + current.length >= chordString.length) {
       result.push({
         chords: current.join(' '),
         repeats: repeatLength,
@@ -29,6 +29,7 @@ function init(){
     }
 
     // Add strings to current for comparison
+    matchLength = 0;
     for (let c = 0; c < current.length; c++) {
         if (current[c] === chordString[c + i + 1]) {
           matchLength++;
@@ -38,14 +39,13 @@ function init(){
     };
 
     // If matches are found move pointer ahead
-    if (matchLength > 0) {
+    if (matchLength === current.length) {
       i = i + matchLength - 1;
-      matchLength = 0;
       repeatLength++;
       continue;
     }
 
-    if (matchLength === 0 && repeatLength > 0) {
+    if (repeatLength > 0) {
       result.push({
         chords: current.join(' '),
         repeats: repeatLength,
@@ -55,15 +55,22 @@ function init(){
       continue;
     }
     
-    if (matchLength === 0 && repeatLength === 0 && current.length === maxPatternLength) {
+    if (repeatLength === 0 || current.length === maxPatternLength) {
       i = i - current.length + 1;
       result.push({
         chords: current[0],
-        repeats: repeatLength,
+        repeats: 0,
       });
       current = [];
       continue;
     }
+  }
+  // Stuff that left on current
+  if (current.length > 0) {
+    result.push({
+      chords: current.join(' '),
+      repeats: 0,
+    })
   }
 
   let noRepeats = [];
@@ -84,6 +91,13 @@ function init(){
     }
     return acc;
   }, []);
+
+  if (noRepeats.length > 0) {
+    results.push({
+      chords: noRepeats.join(' '),
+      repeats: 0,
+    })
+  }
 
   showResults(results);
 }
