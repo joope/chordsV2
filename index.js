@@ -1,5 +1,17 @@
 function init(){ 
-  const chords = document.querySelectorAll('pre > span');
+
+  // First try to find mobile chords
+  let chords = document.querySelectorAll('.tab-row > .text-chord');
+  const annoyingPopup = document.querySelector('.js-splash-container.ug-floated-splash');
+  if (annoyingPopup) annoyingPopup.innerHTML = '';
+  const annoyingPopup2 = document.querySelector('.spl-fixed-action');
+  if (annoyingPopup2) annoyingPopup2.innerHTML = '';
+  
+
+  if (chords.length === 0) {
+    chords = document.querySelectorAll('pre > span');
+  }
+
   const chordString = [];
   chords.forEach(c => chordString.push(c.textContent));
 
@@ -103,7 +115,7 @@ function showResults(result){
   const results = document.createElement('ul');
   results.appendChild(document.querySelector('header h1'));
   results.setAttribute('id', 'better-chords');
-  results.style.cssText = "box-sizing: border-box; width: 100%;background-color: whitesmoke;font-size: 4vh;color: black;text-align: center;padding: 1vh;list-style: none;font-weight: 600;word-spacing: 3vh;line-height: 6vh; margin-top: 12px;";
+  results.style.cssText = "box-sizing: border-box; width: 100%;background-color: whitesmoke;font-size: 3vh;color: black;text-align: center;padding: 1vh;list-style: none;font-weight: 600;word-spacing: 3vh;line-height: 4vh; margin-top: 12px;";
 
   result.forEach(c => {
     const chordGroup = document.createElement('li');
