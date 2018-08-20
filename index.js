@@ -71,7 +71,7 @@ function init(){
     }
   }
   // Stuff that left on current
-  console.log(current);
+
   if (repeatLength > 0 ) {
     result[result.length]
   }
@@ -113,8 +113,9 @@ function init(){
 
 function showResults(result){
   const results = document.createElement('ul');
-  results.appendChild(document.querySelector('header h1'));
-  results.setAttribute('id', 'better-chords');
+  const header = document.querySelector('header h1');
+  results.appendChild(header.cloneNode(true));
+  results.setAttribute('id', 'ultimate-chords');
   results.style.cssText = "box-sizing: border-box; width: 100%;background-color: whitesmoke;font-size: 3vh;color: black;text-align: center;padding: 1vh;list-style: none;font-weight: 600;word-spacing: 3vh;line-height: 4vh; margin-top: 12px;";
 
   result.forEach(c => {
@@ -129,8 +130,13 @@ function showResults(result){
     }
     results.appendChild(chordGroup);
   });
-
-  document.body.insertBefore(results, document.body.firstChild);
+  
+  const prevChords = document.getElementById('ultimate-chords');
+  if (prevChords) {
+    document.body.replaceChild(results, prevChords);
+  } else {
+    document.body.insertBefore(results, document.body.firstChild);
+  }
 }
 
 function startWhenContentLoaded() {
@@ -139,7 +145,6 @@ function startWhenContentLoaded() {
     const buttons = document.querySelectorAll('span > button');
     buttons.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        console.log('click');
         init();
       });
     })
